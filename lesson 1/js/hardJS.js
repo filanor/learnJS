@@ -4,12 +4,14 @@
 
 'use strict';
 
+
+// создаем переменные ( summ = 1, что бы не было умножения на 0)
 const x = 33721;
-var summ = 0;
+var summ = 1;  
 
 // запускаем цикл. на каждой итерации делим  i на 10 и преобразуем в целое число
 for (var i = x; i > 0; i = parseInt(i / 10)) {
-    summ += i % 10;
+    summ *= i % 10;
 }
 
 console.log(summ);
