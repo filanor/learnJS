@@ -1,16 +1,20 @@
 'use strict';
 
 // ОБъявляем переменные (п.1)
-var money,
+let money,
     time;
+
 
 //Запрашиваем пользователя данные (п.2)
 money = +prompt("Ваш бюджет на месяц?");
-time = prompt("Введите дату в формате YYYY-MM-DD");
+time = prompt("Введите дату в формате YYYY-MM-DD"); 
+
+
+//Запрашиваем пользователя данные (п.2)
 
 
 // Создаем объект (п.3)
-var appData = {
+let appData = {
     budget: money,
     timeData: time,
     expenses: {},

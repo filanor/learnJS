@@ -52,3 +52,7 @@ for (let i = 0; i < arr.length; i++) {
 
     }
 }
+
+
+
+alert( "1"[0] );
