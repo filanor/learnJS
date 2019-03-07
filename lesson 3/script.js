@@ -8,15 +8,12 @@ function start() {
     //Функция запрашивает пользователя месячный бюджет и дату
     money = +prompt("Ваш бюджет на месяц?");
 
-    // Проверяем формат введенных данных
     while (isNaN(money) || money == "" || money == "null") {
         money = +prompt("Ваш бюджет на месяц?");
     }
-
     time = prompt("Введите дату в формате YYYY-MM-DD");
 }
 start();
-
 
 // Создаем объект (п.3)
 let appData = {
@@ -89,10 +86,10 @@ function checkSavings() {
 }
 checkSavings();
 
-function chooseOptExpenses() {
+function chooseOptExpenses(){
     //функцию для определения необязательных расходов 
-    for (let i = 0; i < 3; i++) {
-        appData.optionalExpenses[i] = prompt("Статья расходов");
+    for(let i = 0; i < 3; i++) {
+        appData.optionalExpenses[i] = prompt("Статья расходов");  
     }
 }
 chooseOptExpenses();
