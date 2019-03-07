@@ -62,3 +62,4 @@ function getDifference(date1, date2) {
     // Считаем разницу между датами и переводим ее в дни
     rez = ((+dateTwo) - (+dateOne)) / 86400 / 1000;
     return parseInt(rez);
+}
