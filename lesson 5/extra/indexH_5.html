@@ -6,10 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<body>
-    <div id="les_2_p_1">
-        <span>Дни недели:</span>
+<body style = "font-size: 20px; line-height: 25px;">
+    <div id="weekDay-wrap" style = "width: 300px; margin: 100px auto 50px auto;">
+        <span>Дата и время:</span>
+        <span class = "Date" style = "font-weight: bold;"></span>
+        <br>
+        <span>День недели:</span>
+        <span class = "weekDay" style = "font-weight: bold;"></span>
     </div>
-    <script src="hardJS_3.js"></script>
+
+    <form class = "date-compare" style = "width: 400px; margin: 100px auto 50px auto;">
+        <div class = "date-compare__request-block">
+            <span style = "display: block">Расчет разницы между датами</span>
+            <input type="text" placeholder="введите дату № 1 дд.мм.ггг" class = "date-compare__date1" style = "height: 20px;">
+            <input type="text" placeholder="введите дату № 2 дд.мм.ггг" class = "date-compare__date2" style = "height: 20px;">
+            <input type= "button" value="Посчитать" class = "date-compare__calculateBtn" style = "background-color: yellow; cursor: pointer">
+        </div>
+    </form>
+    <div>
+        <span style = "display: block; width: 450px; margin: 10px auto 50px auto;">Разница между введенными датами составляет: </span>
+        <span class="date-compare__result" style = "display: bold"></span> 
+    </div>
+    <script src="hardJS_5.js"></script>
 </body>
 </html>
