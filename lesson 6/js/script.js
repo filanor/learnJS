@@ -51,21 +51,21 @@ approveOptionalExpBtn.disabled = true;
 
 
 
-function isEmpty(list){
+function isEmpty(list) {
     // Функция проверяет, есть ли незаполненые input в массиве элементов
     let emptyItem = false;
     for (let i = 0, len = list.length; i < len; i++) {
         if (list[i].value == '') {
-            emptyItem = true;       
+            emptyItem = true;
         }
     }
-    if (emptyItem == false){
+    if (emptyItem == false) {
         return false;
     } else {
         return true;
     }
 }
-    
+
 
 
 
@@ -89,21 +89,29 @@ startButton.addEventListener('click', function () {
     }
 
     appData.budget = money;
-    appData.timeData = time;
+    let date;
+    if (time == "" || time == null) {
+        date = new Date();
+        let now = `${date.getFullYear()}--${date.getMonth() +1}--${date.getDate()}`;
+        appData.timeData = now;
+    } else {
+        date = new Date(Date.parse(time));
+        appData.timeData = time;
+    }
+
 
     budgetValue.textContent = money.toFixed();
-    let date = new Date(Date.parse(time));
-    console.log(date);
+    //let date = new Date(Date.parse(time));
     yearValue.value = date.getFullYear();
     MonthValue.value = date.getMonth() + 1;
     DayValue.value = date.getDate();
 
     //включаем кнопки
     flag = true;
-    if ( !isEmpty(expensesList)){
+    if (!isEmpty(expensesList)) {
         approveExpBtn.disabled = false;
     }
-    if ( !isEmpty(optionalExpensesList)){
+    if (!isEmpty(optionalExpensesList)) {
         approveOptionalExpBtn.disabled = false;
     }
 });
@@ -112,28 +120,28 @@ startButton.addEventListener('click', function () {
 // Вешаем проверку на изменение  Input, для разблокировки кнопки утвердить
 // Обязательные расходы
 
-for(let i = 0; i < expensesList.length; i++){      
-    expensesList[i].addEventListener('input', function(){
-        if ( !isEmpty(expensesList) == true ) {
+for (let i = 0; i < expensesList.length; i++) {
+    expensesList[i].addEventListener('input', function () {
+        if (!isEmpty(expensesList) == true) {
             approveExpBtn.disabled = false;
         }
 
-        if (i % 2 != 0){
+        if (i % 2 != 0) {
             expensesList[i].value = expensesList[i].value.replace(/[^\d]/g, '');
 
         }
-        
+
     });
 }
- 
+
 // Вешаем проверку на изменение  Input, для разблокировки кнопки утвердить
 // Доп расходы
-for(let i = 0; i < optionalExpensesList.length; i++){        
-    optionalExpensesList[i].addEventListener('input', function(){
-        if ( !isEmpty(optionalExpensesList) == true ) {
+for (let i = 0; i < optionalExpensesList.length; i++) {
+    optionalExpensesList[i].addEventListener('input', function () {
+        if (!isEmpty(optionalExpensesList) == true) {
             approveOptionalExpBtn.disabled = false;
         }
-        optionalExpensesList[i].value = optionalExpensesList[i].value.replace(/[^а-яё]/, '');
+        optionalExpensesList[i].value = optionalExpensesList[i].value.replace(/[^а-яёЁА-Я]/, '');
         console.log(optionalExpensesList[i].value);
     });
 }
@@ -243,6 +251,3 @@ savingsPercent.addEventListener('input', function () {
 
     }
 });
-
-
-
