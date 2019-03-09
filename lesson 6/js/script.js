@@ -50,6 +50,7 @@ approveExpBtn.disabled = true;
 approveOptionalExpBtn.disabled = true;
 
 
+
 function isEmpty(list){
     // Функция проверяет, есть ли незаполненые input в массиве элементов
     let emptyItem = false;
@@ -110,11 +111,18 @@ startButton.addEventListener('click', function () {
 
 // Вешаем проверку на изменение  Input, для разблокировки кнопки утвердить
 // Обязательные расходы
-for(let i = 0; i < expensesList.length; i++){        
+
+for(let i = 0; i < expensesList.length; i++){      
     expensesList[i].addEventListener('input', function(){
-        if ( !isEmpty(expensesList) && flag == true ) {
+        if ( !isEmpty(expensesList) == true ) {
             approveExpBtn.disabled = false;
         }
+
+        if (i % 2 != 0){
+            expensesList[i].value = expensesList[i].value.replace(/[^\d]/g, '');
+
+        }
+        
     });
 }
  
@@ -122,9 +130,11 @@ for(let i = 0; i < expensesList.length; i++){
 // Доп расходы
 for(let i = 0; i < optionalExpensesList.length; i++){        
     optionalExpensesList[i].addEventListener('input', function(){
-        if ( !isEmpty(optionalExpensesList) && flag == true ) {
+        if ( !isEmpty(optionalExpensesList) == true ) {
             approveOptionalExpBtn.disabled = false;
         }
+        optionalExpensesList[i].value = optionalExpensesList[i].value.replace(/[^а-яё]/, '');
+        console.log(optionalExpensesList[i].value);
     });
 }
 
@@ -159,6 +169,7 @@ approveExpBtn.addEventListener('click', function () {
 
 // Удтверждение дополнительных расходов
 approveOptionalExpBtn.addEventListener('click', function () {
+    optionalExpensesValue.textContent = '';
     for (let i = 0; i < optionalExpensesList.length; i++) {
         let opt = optionalExpensesList[i].value;
         appData.optionalExpenses[i] = opt;
