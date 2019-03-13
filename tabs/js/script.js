@@ -34,4 +34,44 @@ window.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+
+    // Timer
+    let deadline = '2018-03-14';
+
+    function getTimeRemaining(endTime) {
+        let t = Date.parse(endTime) - Date.parse(new Date()),
+            seconds = Math.floor((t / 1000) % 60),
+            minutes = Math.floor((t / 1000 / 60) % 60),
+            hours = Math.floor((t / (1000 * 60 * 60)));
+        //hours = Math.floor((t/1000/60/60) %24)
+        //days = Math.floor( (t / (1000*60*60*24))) )
+        return {
+            'total': t,
+            'hours': (hours < 0) ? '00' : (hours < 10) ? '0' + hours : hours,
+            'minutes': (minutes < 0) ? '00' : (minutes < 10) ? '0' + minutes : minutes,
+            'seconds': (seconds < 0) ? '00' : (seconds < 10) ? '0' + seconds : seconds
+        };
+    }
+
+    function setClock(id, endTime) {
+        let timer = document.getElementById(id),
+            hours = timer.querySelector('.hours'),
+            minutes = timer.querySelector('.minutes'),
+            seconds = timer.querySelector('.seconds'),
+            timeInteval = setInterval(updateClock, 1000);
+
+        function updateClock() {
+            let t = getTimeRemaining(endTime);
+            hours.textContent = t.hours;
+            minutes.textContent = t.minutes;
+            seconds.textContent = t.seconds;
+
+            if (t.total <= 0) {
+                clearInterval(timeInteval);
+            }
+        }
+    }
+
+    setClock('timer', deadline);
 });
