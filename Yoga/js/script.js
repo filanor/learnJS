@@ -90,7 +90,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //===================================================================  
     //=================        smooth slide        ======================
     //===================================================================
-    
+
     let headerBox = document.querySelector('header nav ul');
 
     headerBox.addEventListener('click', function (e) {
@@ -120,30 +120,29 @@ window.addEventListener('DOMContentLoaded', function () {
                 document.body.offsetHeight, document.documentElement.offsetHeight,
                 document.body.clientHeight, document.documentElement.clientHeight
             );
-            
 
-        function step () {
+
+        function step() {
             let position = block.getBoundingClientRect().top - 80,
-                ste = 50,
                 now = Date.now() - start,
                 result = Math.round(position * now / duration);
 
-                result = (result > dirY * position) ? position : (result == 0) ? dirY : result;
+            result = (result > dirY * position) ? position : (result == 0) ? dirY : result;
 
-                if (dirY * position > 0 && (pageHeight - window.pageYOffset) > dirY * document.documentElement.clientHeight) {
-                    // прокручиваем страницу на величину result
-                    window.scrollBy(0,result);
-                    // рекурсивно запускаем функцию анимации прокрутки страницы
-                    requestAnimationFrame(step);
-                }
+            if (dirY * position > 0 && (pageHeight - window.pageYOffset) > dirY * document.documentElement.clientHeight) {
+                // прокручиваем страницу на величину result
+                window.scrollBy(0, result);
+                // рекурсивно запускаем функцию анимации прокрутки страницы
+                requestAnimationFrame(step);
+            }
         }
 
-    requestAnimationFrame(step);
+        requestAnimationFrame(step);
     }
 
 
 
-        
+
     //===================================================================  
     //=======================       modal       =========================
     //===================================================================
@@ -152,42 +151,67 @@ window.addEventListener('DOMContentLoaded', function () {
         infoMore = document.getElementById('about'),
         overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close');
-    
-    more.addEventListener('click', function() {
+
+    more.addEventListener('click', function () {
         this.classList.add('more-splash');
         modalOpen();
     });
 
-    close.addEventListener('click', function(){
+    close.addEventListener('click', function () {
         this.classList.add('more-splash');
         modalClose();
     });
-    infoMore.addEventListener('click', function(e) {
+    infoMore.addEventListener('click', function (e) {
         if (e.target && e.target.matches('div.description-btn')) {
             modalOpen();
         }
     })
 
 
-    function modalOpen(el) {
+    function modalOpen() {
         overlay.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Запрет прокрутки страницы при открытии модального окна
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            return; // если с мобилы
+        } else if (/Edge|MSIE|Trident/i.test(navigator.userAgent)) {
+            // код если пользователь зашел с Egde или IE
+            overlay.classList.add('fade');
+        } else {
+            modalAnimation();
+            console.log('sad');
+        }
     }
 
     function modalClose() {
         overlay.style.display = 'none';
         document.body.style.overflow = '';
     }
-    
-    function modalAnimation(){
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            return; // если с мобилы
-        } else if (/Edge|MSIE|Trident/i.test(navigator.userAgent)){
-            // код если пользователь зашел с Egde или IE
-            // анамация на css
-        } else {
-            //все остальное 
-            //анимация на js
+
+    function modalAnimation() {
+        let endSize = 750,
+            size = 740,
+            opacity = 0,
+            start = Date.now(),
+            modal = document.querySelector('.popup');
+        
+        modal.style.opacity = opacity;
+        modal.style.width =size + 'px';
+
+        function animate(time) {
+            if (size >= endSize && opacity == 1) {
+                console.log(size);
+                return;
+            }
+            let now = performance.now() - start;
+            opacity = opacity >= 1 ? opacity : opacity + 0.05;
+            size = size >= endSize ? size : size + 1;
+            
+            modal.style.opacity = opacity;
+            modal.style.width = size + 'px';
+
+            requestAnimationFrame(animate);
         }
+        
+        requestAnimationFrame(animate);
     }
 });
