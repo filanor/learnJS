@@ -1,6 +1,10 @@
 window.addEventListener('DOMContentLoaded', function () {
-
     'use strict';
+
+    //===================================================================  
+    //=======================       tabs        =========================
+    //===================================================================
+
     let tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
@@ -36,7 +40,11 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    // Timer
+
+    //===================================================================  
+    //=======================        timer        =======================
+    //===================================================================
+
     let deadline = '2018-03-14';
 
     function getTimeRemaining(endTime) {
@@ -76,7 +84,13 @@ window.addEventListener('DOMContentLoaded', function () {
     setClock('timer', deadline);
 
 
-    // smooth slide
+
+
+
+    //===================================================================  
+    //=================        smooth slide        ======================
+    //===================================================================
+    
     let headerBox = document.querySelector('header nav ul');
 
     headerBox.addEventListener('click', function (e) {
@@ -125,5 +139,55 @@ window.addEventListener('DOMContentLoaded', function () {
         }
 
     requestAnimationFrame(step);
+    }
+
+
+
+        
+    //===================================================================  
+    //=======================       modal       =========================
+    //===================================================================
+
+    let more = document.querySelector('.more'),
+        infoMore = document.getElementById('about'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close');
+    
+    more.addEventListener('click', function() {
+        this.classList.add('more-splash');
+        modalOpen();
+    });
+
+    close.addEventListener('click', function(){
+        this.classList.add('more-splash');
+        modalClose();
+    });
+    infoMore.addEventListener('click', function(e) {
+        if (e.target && e.target.matches('div.description-btn')) {
+            modalOpen();
+        }
+    })
+
+
+    function modalOpen(el) {
+        overlay.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Запрет прокрутки страницы при открытии модального окна
+    }
+
+    function modalClose() {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    
+    function modalAnimation(){
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            return; // если с мобилы
+        } else if (/Edge|MSIE|Trident/i.test(navigator.userAgent)){
+            // код если пользователь зашел с Egde или IE
+            // анамация на css
+        } else {
+            //все остальное 
+            //анимация на js
+        }
     }
 });
