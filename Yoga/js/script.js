@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    info.addEventListener('click', function (event) {
+    info.addEventListener('click', (event) => {
         let target = event.target;
         if (target && target.classList.contains('info-header-tab')) {
             for (let i = 0; i < tab.length; i++) {
@@ -102,7 +102,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     let headerBox = document.querySelector('header nav ul');
 
-    headerBox.addEventListener('click', function (e) {
+    headerBox.addEventListener('click', (e) => {
 
         if (e.target && e.target.matches('li a')) {
             e.preventDefault();
@@ -160,16 +160,16 @@ window.addEventListener('DOMContentLoaded', function () {
         overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close');
 
-    more.addEventListener('click', function () {
+    more.addEventListener('click', () => {
         this.classList.add('more-splash');
         modalOpen();
     });
 
-    close.addEventListener('click', function () {
+    close.addEventListener('click', () => {
         this.classList.add('more-splash');
         modalClose();
     });
-    infoMore.addEventListener('click', function (e) {
+    infoMore.addEventListener('click', (e) => {
         if (e.target && e.target.matches('div.description-btn')) {
             modalOpen();
         }
