@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <script>
+        'use strict';
+
+        //Создать класс options
+        class Options {
+            
+            //Он должен содержать свойства: height, width, bg, fontSize, textAlign
+            constructor(height, width, bg, fontSize = 16, textAlign = 'left') {
+                this.height = height;
+                this.width = width;
+                this.bg = bg;
+                this.fontSize = fontSize;
+                this.textAlign = textAlign;
+            }
+
+            //Он должен содержать метод, создающий новый div на странице, записывающий в него любой 
+            //текст и при помощи cssText изменять свой стиль из переданных параметров 
+            createDiv() {
+                let el = document.createElement('div');
+                el.style.cssText =
+                    `height: ${this.height}px; width: ${this.width}px; 
+                     background: ${this.bg}; font-size: ${this.fontSize}; text-align: 
+                     ${this.textAlign};`;
+                el.textContent = 'Привет, я div и я пирожок';
+                document.body.appendChild(el);
+            }
+        }
+
+
+
+        //Создать новый объект через класс
+        let newClassObj = new Options(300, 300, 'blue', 25, 'center');
+        //Вызвать его метод и получить элемент на странице
+        newClassObj.createDiv();
+    </script>
+</body>
+
+</html>

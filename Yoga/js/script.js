@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //=======================        timer        =======================
     //===================================================================
 
-    let deadline = '2018-03-14';
+    let deadline = '2019-03-23';
 
     function getTimeRemaining(endTime) {
         let t = Date.parse(endTime) - Date.parse(new Date()),
@@ -67,18 +67,27 @@ window.addEventListener('DOMContentLoaded', function () {
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),
             seconds = timer.querySelector('.seconds'),
-            timeInteval = setInterval(updateClock, 1000);
+            timeInteval = setInterval(() => {
+                let t = getTimeRemaining(endTime);
+                hours.textContent = t.hours;
+                minutes.textContent = t.minutes;
+                seconds.textContent = t.seconds;
 
-        function updateClock() {
-            let t = getTimeRemaining(endTime);
-            hours.textContent = t.hours;
-            minutes.textContent = t.minutes;
-            seconds.textContent = t.seconds;
+                if (t.total <= 0) {
+                    clearInterval(timeInteval);
+                }
+            }, 1000);
 
-            if (t.total <= 0) {
-                clearInterval(timeInteval);
-            }
-        }
+        // function updateClock() {
+        //     let t = getTimeRemaining(endTime);
+        //     hours.textContent = t.hours;
+        //     minutes.textContent = t.minutes;
+        //     seconds.textContent = t.seconds;
+
+        //     if (t.total <= 0) {
+        //         clearInterval(timeInteval);
+        //     }
+        // }
     }
 
     setClock('timer', deadline);
@@ -106,7 +115,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
             if (scrolToBlock.getBoundingClientRect().top - 80 != 0) {
                 // Если 0, то страницу крутить не нужно
-                console.log('Начинаем');
                 scroll(scrolToBlock, dirY);
             }
         }
@@ -178,7 +186,6 @@ window.addEventListener('DOMContentLoaded', function () {
             overlay.classList.add('fade');
         } else {
             modalAnimation();
-            console.log('sad');
         }
     }
 
@@ -193,9 +200,9 @@ window.addEventListener('DOMContentLoaded', function () {
             opacity = 0,
             start = Date.now(),
             modal = document.querySelector('.popup');
-        
+
         modal.style.opacity = opacity;
-        modal.style.width =size + 'px';
+        modal.style.width = size + 'px';
 
         function animate(time) {
             if (size >= endSize && opacity == 1) {
@@ -205,13 +212,13 @@ window.addEventListener('DOMContentLoaded', function () {
             let now = performance.now() - start;
             opacity = opacity >= 1 ? opacity : opacity + 0.05;
             size = size >= endSize ? size : size + 1;
-            
+
             modal.style.opacity = opacity;
             modal.style.width = size + 'px';
 
             requestAnimationFrame(animate);
         }
-        
+
         requestAnimationFrame(animate);
     }
 });
