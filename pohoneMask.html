@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" class="phone-input">
+
+    <script>
+        let input = document.querySelector('.phone-input'),
+            mask = '+7 (___)___-__-__',
+            value = '';
+
+        input.placeholder = mask;
+        input.addEventListener('keydown', function (e) {
+            if (!(e.key == 'Backspace')) {
+                e.preventDefault();
+            }
+
+            if (/[0-9]/.test(e.key)) {
+                вар 2
+                value = this.value;
+                if (mask[value.length] == '_') {
+                    this.value = value + e.key;
+                } else {
+                    for (let i = value.length; i < mask.length; i++) {
+                        if (mask[i] == '_') {
+                            this.value = value + e.key;
+                            break;
+                        } else {
+                            value += mask[i];
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>
