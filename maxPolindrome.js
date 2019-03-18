@@ -7,6 +7,7 @@ function maxPolindrome(str) {
 
     for (let i = 0; i < str.length; i++) {
         let pos = i;
+        // if we have another str[i]
         while ((pos = str.indexOf(str[i], pos + 1)) != -1) {
             if (pos - i > maxPolLength) {
                 let subStr = str.slice(i, pos + 1);

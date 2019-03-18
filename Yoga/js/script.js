@@ -9,8 +9,6 @@ window.addEventListener('DOMContentLoaded', function () {
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
 
-
-
     function hideTabContent(a) {
         for (let i = a; i < tabContent.length; i++) {
             tabContent[i].classList.remove('show');
@@ -27,7 +25,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    info.addEventListener('click', (event) => {
+    info.addEventListener('click', event => {
         let target = event.target;
         if (target && target.classList.contains('info-header-tab')) {
             for (let i = 0; i < tab.length; i++) {
@@ -45,7 +43,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //=======================        timer        =======================
     //===================================================================
 
-    let deadline = '2019-03-23';
+    const deadline = '2019-03-23';
 
     function getTimeRemaining(endTime) {
         let t = Date.parse(endTime) - Date.parse(new Date()),
@@ -77,17 +75,6 @@ window.addEventListener('DOMContentLoaded', function () {
                     clearInterval(timeInteval);
                 }
             }, 1000);
-
-        // function updateClock() {
-        //     let t = getTimeRemaining(endTime);
-        //     hours.textContent = t.hours;
-        //     minutes.textContent = t.minutes;
-        //     seconds.textContent = t.seconds;
-
-        //     if (t.total <= 0) {
-        //         clearInterval(timeInteval);
-        //     }
-        // }
     }
 
     setClock('timer', deadline);
@@ -160,12 +147,12 @@ window.addEventListener('DOMContentLoaded', function () {
         overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close');
 
-    more.addEventListener('click', () => {
+    more.addEventListener('click', function (e) {
         this.classList.add('more-splash');
         modalOpen();
     });
 
-    close.addEventListener('click', () => {
+    close.addEventListener('click', function (e) {
         this.classList.add('more-splash');
         modalClose();
     });
@@ -220,5 +207,107 @@ window.addEventListener('DOMContentLoaded', function () {
         }
 
         requestAnimationFrame(animate);
+    }
+
+
+
+
+    //===================================================================  
+    //========================       form       =========================
+    //===================================================================  
+
+    let modalForm = document.querySelector('.main-form'),
+        input = document.getElementsByTagName('input'),
+        callbackForm = document.getElementById('form'),
+        phoneInput = document.querySelectorAll('input[type = tel]');
+
+
+    // Валидация ввода телефона
+    let telValue = '';
+    for (let i = 0; i < phoneInput.length; i++) {
+        phoneInput[i].addEventListener('keydown', function(e) {
+            if (!(e.key == 'Backspace' || e.key == 'Shift')) {
+                e.preventDefault();
+            }
+            if(phoneInput[i].length == 0 && /[\+]/.test(e.key) ) {
+                this.value = telValue + e.key;
+            } else if (/[0-9]/.test(e.key)) {
+                telValue = this.value;
+                this.value = telValue + e.key;
+            }
+        });
+    }
+
+
+    // Обработка формы обратной связи
+    callbackForm.addEventListener('submit', e => {
+        e.preventDefault();
+        sendRequest(callbackForm);
+    });
+
+
+    // Обрабатываем модальное окно
+    modalForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        sendRequest(modalForm);
+    });
+
+
+    function sendRequest(form) {
+    // Функция отправляет данные полученой формы на сервер
+        let message = {
+            loading: '<img src = "../img/ajax-loader.gif">',
+            success: '<img style = "max-width:66px; max-height: 66px;" src = "../img/success.png">',
+            failure: 'Что-то пошло не так...'
+        }
+
+        let statusMessage = document.createElement('div');
+        
+        statusMessage.classList.add('status');
+
+        form.appendChild(statusMessage);
+
+        let request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+
+        // Если обычный формат
+        //request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //JSON
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+        let json = formToJSON(callbackForm);
+        request.send(json);
+        
+        //request.send(formData); - для обычного формата
+        
+        request.addEventListener('readystatechange', function () {
+            if (request.readyState < 4) {
+                statusMessage.innerHTML = message.loading;
+            } else if (request.readyState == 4 && request.status == 200) {
+                setTimeout(() => {
+                    statusMessage.innerHTML = message.success;    
+                }, 1000);
+                
+            } else {
+                statusMessage.innerHTML = message.failure;
+            }
+        });
+
+        for (let i = 0; i < input.length; i++) {
+            input[i].value = '';
+        }
+    }
+
+    function formToJSON(form) {
+    // Функция получает елемент формы и возвращае введенные данные в формате JSON
+        let formData = new FormData(form);
+
+        // Преврящаем объект FormData в обычный объект
+        let obj = {};
+        formData.forEach(function (value, key) {
+            obj[key] = value;
+        });
+
+        return JSON.stringify(obj);
     }
 });
