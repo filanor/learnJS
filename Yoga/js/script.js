@@ -225,13 +225,13 @@ window.addEventListener('DOMContentLoaded', function () {
     // Валидация ввода телефона
     let telValue = '';
     for (let i = 0; i < phoneInput.length; i++) {
-        phoneInput[i].addEventListener('keypress', function(e) {
+        phoneInput[i].addEventListener('keypress', function (e) {
             if (!(e.key == 'Backspace' || e.key == 'Shift')) {
                 e.preventDefault();
             }
-            
-            if(phoneInput[i].value.length == 0 && /\+/.test(e.key) ) {
-                
+
+            if (phoneInput[i].value.length == 0 && /\+/.test(e.key)) {
+
                 this.value = telValue + e.key;
             } else if (/[0-9]/.test(e.key)) {
                 telValue = this.value;
@@ -256,40 +256,48 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     function sendRequest(form) {
-    // Функция отправляет данные полученой формы на сервер
+        // Функция отправляет данные полученой формы на сервер
         let message = {
-            loading: '<img src = "../img/ajax-loader.gif">',
-            success: '<img style = "max-width:66px; max-height: 66px;" src = "../img/success.png">',
+            loading: '<img src = "./img/ajax-loader.gif">',
+            success: '<img style = "max-width:66px; max-height: 66px;" src = "./img/success.png">',
             failure: 'Что-то пошло не так...'
         }
 
         let statusMessage = document.createElement('div');
         statusMessage.classList.add('status');
         form.appendChild(statusMessage);
+        
+        let json = formToJSON(callbackForm);
 
         let request = new XMLHttpRequest();
         request.open('POST', 'server.php');
-
-        // Если обычный формат
-        //request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        //JSON
         request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
-        let json = formToJSON(callbackForm);
-        request.send(json);
-        //request.send(formData); - для обычного формата
-        
-        request.addEventListener('readystatechange', function () {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = message.loading;
-            } else if (request.readyState == 4 && request.status == 200) {
-                setTimeout(() => {
-                    statusMessage.innerHTML = message.success;    
-                }, 1000);
-                
-            } else {
-                statusMessage.innerHTML = message.failure;
-            }
+        let promise = new Promise((resolve, reject) => {
+            request.send(json);
+            statusMessage.innerHTML = message.loading;
+            request.addEventListener('load', function () {
+                // console.log(promise.status);
+                // if (request.readyState < 4) {
+                //     resolve(message.loading);
+                //     //statusMessage.innerHTML = message.loading;
+                if (request.readyState == 4 && request.status == 200) {
+                    //statusMessage.innerHTML = message.success;
+                    resolve(message.success);
+    
+                } else {
+                    reject(message.failure);
+                    //statusMessage.innerHTML = message.failure;
+                }
+            });
+            //return promise;
+        });
+
+        promise.then(data => {
+            statusMessage.innerHTML = data;
+        },
+        error => {
+            statusMessage.innerHTML = error;
         });
 
         for (let i = 0; i < input.length; i++) {
@@ -299,7 +307,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     function formToJSON(form) {
-    // Функция получает елемент формы и возвращае введенные данные в формате JSON
+        // Функция получает елемент формы и возвращае введенные данные в формате JSON
         let formData = new FormData(form);
 
         // Преврящаем объект FormData в обычный объект

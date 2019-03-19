@@ -9,7 +9,6 @@ inputRub.addEventListener('input', () => {
         request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
         request.send();
         request.addEventListener('load', function () {
-            console.log(request.readyState);
             if (request.readyState === 4 && request.status == 200) {
                 resolve(JSON.parse(request.response));
             } else {
