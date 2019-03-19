@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //=======================       tabs        =========================
     //===================================================================
 
-    let tab = document.querySelectorAll('.info-header-tab'),
+    const tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
 
@@ -16,8 +16,6 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    hideTabContent(1);
-
     function showTabContent(b) {
         if (tabContent[b].classList.contains('hide')) {
             tabContent[b].classList.remove('hide');
@@ -25,11 +23,12 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    info.addEventListener('click', event => {
-        let target = event.target;
-        if (target && target.classList.contains('info-header-tab')) {
+    hideTabContent(1);
+
+    info.addEventListener('click', e => {
+        if (e.target && e.target.classList.contains('info-header-tab')) {
             for (let i = 0; i < tab.length; i++) {
-                if (target == tab[i]) {
+                if (e.target == tab[i]) {
                     hideTabContent(0);
                     showTabContent(i);
                 }
@@ -87,18 +86,16 @@ window.addEventListener('DOMContentLoaded', function () {
     //=================        smooth slide        ======================
     //===================================================================
 
-    let headerBox = document.querySelector('header nav ul');
+    const headerBox = document.querySelector('header nav ul');
 
-    headerBox.addEventListener('click', (e) => {
+    headerBox.addEventListener('click', e => {
 
         if (e.target && e.target.matches('li a')) {
             e.preventDefault();
 
             let scrolTo = e.target.getAttribute('href'),
-                // получаем элемент до которого необходимо скролить
-                scrolToBlock = document.querySelector(scrolTo),
-                //получаем расстояние до этого элемента от верхней точки окна с учетом меню (80) 
-                dirY = (scrolToBlock.getBoundingClientRect().top - 80) > 0 ? 1 : -1;
+                scrolToBlock = document.querySelector(scrolTo), // получаем элемент до которого необходимо скролить
+                dirY = (scrolToBlock.getBoundingClientRect().top - 80) > 0 ? 1 : -1; //получаем направление скрола меню (80) 
 
             if (scrolToBlock.getBoundingClientRect().top - 80 != 0) {
                 // Если 0, то страницу крутить не нужно
@@ -142,7 +139,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //=======================       modal       =========================
     //===================================================================
 
-    let more = document.querySelector('.more'),
+    const more = document.querySelector('.more'),
         infoMore = document.getElementById('about'),
         overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close');
@@ -160,7 +157,7 @@ window.addEventListener('DOMContentLoaded', function () {
         if (e.target && e.target.matches('div.description-btn')) {
             modalOpen();
         }
-    })
+    });
 
 
     function modalOpen() {
@@ -216,30 +213,26 @@ window.addEventListener('DOMContentLoaded', function () {
     //========================       form       =========================
     //===================================================================  
 
-    let modalForm = document.querySelector('.main-form'),
+    const modalForm = document.querySelector('.main-form'),
         input = document.getElementsByTagName('input'),
         callbackForm = document.getElementById('form'),
         phoneInput = document.querySelectorAll('input[type = tel]');
 
 
     // Валидация ввода телефона
-    let telValue = '';
     for (let i = 0; i < phoneInput.length; i++) {
-        phoneInput[i].addEventListener('keypress', function(e) {
+        phoneInput[i].addEventListener('keypress', function (e) {
             if (!(e.key == 'Backspace' || e.key == 'Shift')) {
                 e.preventDefault();
             }
-            
-            if(phoneInput[i].value.length == 0 && /\+/.test(e.key) ) {
-                
-                this.value = telValue + e.key;
-            } else if (/[0-9]/.test(e.key)) {
-                telValue = this.value;
-                this.value = telValue + e.key;
+
+            if (phoneInput[i].value.length == 0 && /\+/.test(e.key)) {
+                this.value += e.key;
+            } else if (/[0-9]/.test(e.key)) {                
+                this.value +=  e.key;
             }
         });
     }
-
 
     // Обработка формы обратной связи
     callbackForm.addEventListener('submit', e => {
@@ -247,17 +240,15 @@ window.addEventListener('DOMContentLoaded', function () {
         sendRequest(callbackForm);
     });
 
-
     // Обрабатываем модальное окно
-    modalForm.addEventListener('submit', function (e) {
+    modalForm.addEventListener('submit', e => {
         e.preventDefault();
         sendRequest(modalForm);
     });
 
 
     function sendRequest(form) {
-    // Функция отправляет данные полученой формы на сервер
-        
+        // Функция отправляет данные полученой формы на сервер
         let message = {
             loading: '<img src = "./img/ajax-loader.gif">',
             success: '<img style = "max-width:66px; max-height: 66px;" src = "./img/success.png">',
@@ -267,30 +258,31 @@ window.addEventListener('DOMContentLoaded', function () {
         let statusMessage = document.createElement('div');
         statusMessage.classList.add('status');
         form.appendChild(statusMessage);
+        
+        let json = formToJSON(form);
 
         let request = new XMLHttpRequest();
         request.open('POST', 'server.php');
-
-        // Если обычный формат
-        //request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        //JSON
         request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
-        let json = formToJSON(form);
-        request.send(json);
-        //request.send(formData); - для обычного формата
-        
-        request.addEventListener('readystatechange', function () {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = message.loading;
-            } else if (request.readyState == 4 && request.status == 200) {
-                setTimeout(() => {
-                    statusMessage.innerHTML = message.success;    
-                }, 1000);
-                
-            } else {
-                statusMessage.innerHTML = message.failure;
-            }
+        let promise = new Promise((resolve, reject) => {
+            request.send(json);
+            statusMessage.innerHTML = message.loading;
+            
+            request.addEventListener('load', function () {
+                if (request.readyState == 4 && request.status == 200) {
+                    resolve(message.success);
+                } else {
+                    reject(message.failure);
+                }
+            });
+        });
+
+        promise.then(data => {
+            statusMessage.innerHTML = data;
+        },
+        error => {
+            statusMessage.innerHTML = error;
         });
 
         for (let i = 0; i < input.length; i++) {
@@ -300,7 +292,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     function formToJSON(form) {
-    // Функция получает елемент формы и возвращае введенные данные в формате JSON
+        // Функция получает елемент формы и возвращае введенные данные в формате JSON
         let formData = new FormData(form);
 
         // Преврящаем объект FormData в обычный объект
