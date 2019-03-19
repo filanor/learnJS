@@ -220,6 +220,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     // Валидация ввода телефона
+    let telValue = '';
     for (let i = 0; i < phoneInput.length; i++) {
         phoneInput[i].addEventListener('keypress', function (e) {
             if (!(e.key == 'Backspace' || e.key == 'Shift')) {
@@ -227,12 +228,17 @@ window.addEventListener('DOMContentLoaded', function () {
             }
 
             if (phoneInput[i].value.length == 0 && /\+/.test(e.key)) {
+                //this.value = telValue + e.key;
                 this.value += e.key;
-            } else if (/[0-9]/.test(e.key)) {                
+
+            } else if (/[0-9]/.test(e.key)) {
+                //telValue = this.value;
+                //this.value = telValue + e.key;
                 this.value +=  e.key;
             }
         });
     }
+
 
     // Обработка формы обратной связи
     callbackForm.addEventListener('submit', e => {
@@ -240,8 +246,9 @@ window.addEventListener('DOMContentLoaded', function () {
         sendRequest(callbackForm);
     });
 
+
     // Обрабатываем модальное окно
-    modalForm.addEventListener('submit', e => {
+    modalForm.addEventListener('submit', function (e) {
         e.preventDefault();
         sendRequest(modalForm);
     });
@@ -268,14 +275,21 @@ window.addEventListener('DOMContentLoaded', function () {
         let promise = new Promise((resolve, reject) => {
             request.send(json);
             statusMessage.innerHTML = message.loading;
-            
             request.addEventListener('load', function () {
+                // console.log(promise.status);
+                // if (request.readyState < 4) {
+                //     resolve(message.loading);
+                //     //statusMessage.innerHTML = message.loading;
                 if (request.readyState == 4 && request.status == 200) {
+                    //statusMessage.innerHTML = message.success;
                     resolve(message.success);
+    
                 } else {
                     reject(message.failure);
+                    //statusMessage.innerHTML = message.failure;
                 }
             });
+            //return promise;
         });
 
         promise.then(data => {
