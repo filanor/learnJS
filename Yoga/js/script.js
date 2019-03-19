@@ -257,9 +257,10 @@ window.addEventListener('DOMContentLoaded', function () {
 
     function sendRequest(form) {
     // Функция отправляет данные полученой формы на сервер
+        
         let message = {
-            loading: '<img src = "../img/ajax-loader.gif">',
-            success: '<img style = "max-width:66px; max-height: 66px;" src = "../img/success.png">',
+            loading: '<img src = "./img/ajax-loader.gif">',
+            success: '<img style = "max-width:66px; max-height: 66px;" src = "./img/success.png">',
             failure: 'Что-то пошло не так...'
         }
 
@@ -275,7 +276,7 @@ window.addEventListener('DOMContentLoaded', function () {
         //JSON
         request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 
-        let json = formToJSON(callbackForm);
+        let json = formToJSON(form);
         request.send(json);
         //request.send(formData); - для обычного формата
         
