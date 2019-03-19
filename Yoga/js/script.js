@@ -225,11 +225,13 @@ window.addEventListener('DOMContentLoaded', function () {
     // Валидация ввода телефона
     let telValue = '';
     for (let i = 0; i < phoneInput.length; i++) {
-        phoneInput[i].addEventListener('keydown', function(e) {
+        phoneInput[i].addEventListener('keypress', function(e) {
             if (!(e.key == 'Backspace' || e.key == 'Shift')) {
                 e.preventDefault();
             }
-            if(phoneInput[i].length == 0 && /[\+]/.test(e.key) ) {
+            
+            if(phoneInput[i].value.length == 0 && /\+/.test(e.key) ) {
+                
                 this.value = telValue + e.key;
             } else if (/[0-9]/.test(e.key)) {
                 telValue = this.value;
@@ -262,9 +264,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
 
         let statusMessage = document.createElement('div');
-        
         statusMessage.classList.add('status');
-
         form.appendChild(statusMessage);
 
         let request = new XMLHttpRequest();
@@ -277,7 +277,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
         let json = formToJSON(callbackForm);
         request.send(json);
-        
         //request.send(formData); - для обычного формата
         
         request.addEventListener('readystatechange', function () {
@@ -297,6 +296,7 @@ window.addEventListener('DOMContentLoaded', function () {
             input[i].value = '';
         }
     }
+
 
     function formToJSON(form) {
     // Функция получает елемент формы и возвращае введенные данные в формате JSON
