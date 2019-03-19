@@ -267,7 +267,7 @@ window.addEventListener('DOMContentLoaded', function () {
         statusMessage.classList.add('status');
         form.appendChild(statusMessage);
         
-        let json = formToJSON(callbackForm);
+        let json = formToJSON(form);
 
         let request = new XMLHttpRequest();
         request.open('POST', 'server.php');
