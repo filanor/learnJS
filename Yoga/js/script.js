@@ -149,8 +149,7 @@ window.addEventListener('DOMContentLoaded', function () {
         modalOpen();
     });
 
-    close.addEventListener('click', function (e) {
-        this.classList.add('more-splash');
+    close.addEventListener('click', e => {
         modalClose();
     });
     infoMore.addEventListener('click', (e) => {
@@ -228,8 +227,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
             if (phoneInput[i].value.length == 0 && /\+/.test(e.key)) {
                 this.value += e.key;
-            } else if (/[0-9]/.test(e.key)) {                
-                this.value +=  e.key;
+            } else if (/[0-9]/.test(e.key)) {
+                this.value += e.key;
             }
         });
     }
@@ -258,7 +257,7 @@ window.addEventListener('DOMContentLoaded', function () {
         let statusMessage = document.createElement('div');
         statusMessage.classList.add('status');
         form.appendChild(statusMessage);
-        
+
         let json = formToJSON(form);
 
         let request = new XMLHttpRequest();
@@ -268,7 +267,7 @@ window.addEventListener('DOMContentLoaded', function () {
         let promise = new Promise((resolve, reject) => {
             request.send(json);
             statusMessage.innerHTML = message.loading;
-            
+
             request.addEventListener('load', function () {
                 if (request.readyState == 4 && request.status == 200) {
                     resolve(message.success);
@@ -279,11 +278,11 @@ window.addEventListener('DOMContentLoaded', function () {
         });
 
         promise.then(data => {
-            statusMessage.innerHTML = data;
-        },
-        error => {
-            statusMessage.innerHTML = error;
-        });
+                statusMessage.innerHTML = data;
+            },
+            error => {
+                statusMessage.innerHTML = error;
+            });
 
         for (let i = 0; i < input.length; i++) {
             input[i].value = '';
@@ -303,4 +302,120 @@ window.addEventListener('DOMContentLoaded', function () {
 
         return JSON.stringify(obj);
     }
+
+
+
+
+    //===================================================================  
+    //========================       slider      ========================
+    //===================================================================  
+
+    let slideIndex = 1;
+
+    const slides = document.querySelectorAll('.slider-item'),
+        prev = document.querySelector('.prev'),
+        next = document.querySelector('.next'),
+        dotsWrap = document.querySelector('.slider-dots'),
+        dots = document.querySelectorAll('.dot');
+
+    showSlides(slideIndex);
+
+    function showSlides(index) {
+
+        if (index > slides.length) {
+            slideIndex = 1;
+        }
+        if (index < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach(item => item.style.display = 'none');
+        dots.forEach(dot => dot.classList.remove('dot-active'));
+
+        slides[slideIndex - 1].style.display = 'block';
+        dots[slideIndex - 1].classList.add('dot-active');
+    }
+
+    function plusSlides(index) {
+        showSlides(slideIndex += index);
+    }
+
+    function currentSlide(index) {
+        showSlides(slideIndex = index);
+    }
+
+    prev.addEventListener('click', function () {
+        plusSlides(-1);
+    });
+
+    next.addEventListener('click', function () {
+        plusSlides(1);
+    });
+
+    dotsWrap.addEventListener('click', function (e) {
+        for (let i = 0; i < dots.length + 1; i++) {
+            if (e.target.classList.contains('dot') && e.target == dots[i - 1]) {
+                currentSlide(i);
+            }
+        }
+    });
+
+
+
+
+    //===================================================================  
+    //=========================       calc      =========================
+    //===================================================================  
+
+    let persons = document.querySelectorAll(".counter-block-input")[0],
+        restDays = document.querySelectorAll('.counter-block-input')[1],
+        place = document.getElementById('select'),
+        totalValue = document.getElementById('total');
+
+    let personsSum = 0,
+        daysSum = 0,
+        total = 0;
+
+    totalValue.innerHTML = 0;
+
+    function validCalc(e){
+        if (!(e.key == 'Backspace')) {
+            e.preventDefault();
+        } 
+        return (/[0-9]/.test(e.key)) ? e.key : '';
+    }
+
+    persons.addEventListener('keypress', function(e) {
+        this.value += validCalc(e);
+        personsSum = +this.value;
+        total = (daysSum + personsSum)*4000;
+
+        if (this.value == '' || restDays.value == '') {
+            totalValue.innerHTML = 0;
+        } else {
+            totalValue.innerHTML = total;
+        }
+    });
+
+    restDays.addEventListener('keypress', function(e) {
+        this.value += validCalc(e);
+        daysSum = +this.value;
+        total = (daysSum + personsSum)*4000;
+        console.log(`persons. дни: ${daysSum} люди: ${personsSum}`);
+
+        if (persons.value == '' || this.value == '') {
+            totalValue.innerHTML = 0;
+        } else {
+            totalValue.innerHTML = total;
+        }
+    });
+
+    place.addEventListener('change', function(e) {
+        if (persons.value == '' || restDays.value == '') {
+            totalValue.innerHTML = 0;
+        } else {
+            let a = total;
+            totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+        }
+    });
 });
