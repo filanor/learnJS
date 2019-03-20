@@ -378,17 +378,13 @@ window.addEventListener('DOMContentLoaded', function () {
 
     totalValue.innerHTML = 0;
 
-    function validCalc(e){
-        if (!(e.key == 'Backspace')) {
-            e.preventDefault();
-        } 
-        return (/[0-9]/.test(e.key)) ? e.key : '';
-    }
+    persons.addEventListener('keypress', function (e) {
+        this.value += validKey(e);
+    });
 
-    persons.addEventListener('keypress', function(e) {
-        this.value += validCalc(e);
+    persons.addEventListener('keyup', function (e) {
         personsSum = +this.value;
-        total = (daysSum + personsSum)*4000;
+        total = (daysSum + personsSum) * 4000;
 
         if (this.value == '' || restDays.value == '') {
             totalValue.innerHTML = 0;
@@ -397,11 +393,14 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    restDays.addEventListener('keypress', function(e) {
-        this.value += validCalc(e);
+
+    restDays.addEventListener('keypress', function (e) {
+        this.value += validKey(e);
+    });
+
+    restDays.addEventListener('keyup', function (e) {
         daysSum = +this.value;
-        total = (daysSum + personsSum)*4000;
-        console.log(`persons. дни: ${daysSum} люди: ${personsSum}`);
+        total = (daysSum + personsSum) * 4000;
 
         if (persons.value == '' || this.value == '') {
             totalValue.innerHTML = 0;
@@ -410,7 +409,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    place.addEventListener('change', function(e) {
+    place.addEventListener('change', function (e) {
         if (persons.value == '' || restDays.value == '') {
             totalValue.innerHTML = 0;
         } else {
@@ -418,4 +417,11 @@ window.addEventListener('DOMContentLoaded', function () {
             totalValue.innerHTML = a * this.options[this.selectedIndex].value;
         }
     });
+
+    function validKey(e) {
+        if (!(e.key == 'Backspace' || e.keyCode == 37 || e.keyCode == 39)) {
+            e.preventDefault();
+        }
+        return (/[0-9]/.test(e.key)) ? e.key : '';
+    }
 });
