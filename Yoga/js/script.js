@@ -189,7 +189,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
         function animate(time) {
             if (size >= endSize && opacity == 1) {
-                console.log(size);
                 return;
             }
             let now = performance.now() - start;
@@ -328,13 +327,16 @@ window.addEventListener('DOMContentLoaded', function () {
         if (index < 1) {
             slideIndex = slides.length;
         }
-
+        let cur = 0; 
         slides.forEach(item => item.style.display = 'none');
         dots.forEach(dot => dot.classList.remove('dot-active'));
 
         slides[slideIndex - 1].style.display = 'block';
         dots[slideIndex - 1].classList.add('dot-active');
     }
+
+
+
 
     function plusSlides(index) {
         showSlides(slideIndex += index);
@@ -345,10 +347,14 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     prev.addEventListener('click', function () {
+        //hide();
+        //setTimeout(plusSlides(-1), 2000);
         plusSlides(-1);
     });
 
     next.addEventListener('click', function () {
+        //hide();
+        //setTimeout(plusSlides(-1), 2000);
         plusSlides(1);
     });
 
@@ -360,6 +366,19 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    function hide(){
+        let start = 100;
+        function stepHide(){
+            if( start <= 0){
+                return;
+            }
+            start -= 5;
+            slides[slideIndex].style.width = start + 'px';
+            requestAnimationFrame(stepHide);
+        }
+        stepHide();
+        slides[slideIndex].style.display = 'none';
+    }
 
 
 
@@ -367,7 +386,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //=========================       calc      =========================
     //===================================================================  
 
-    let persons = document.querySelectorAll(".counter-block-input")[0],
+    const persons = document.querySelectorAll(".counter-block-input")[0],
         restDays = document.querySelectorAll('.counter-block-input')[1],
         place = document.getElementById('select'),
         totalValue = document.getElementById('total');
@@ -389,7 +408,7 @@ window.addEventListener('DOMContentLoaded', function () {
         if (this.value == '' || restDays.value == '') {
             totalValue.innerHTML = 0;
         } else {
-            totalValue.innerHTML = total;
+            animateCalc(+totalValue.innerHTML, total);
         }
     });
 
@@ -405,7 +424,7 @@ window.addEventListener('DOMContentLoaded', function () {
         if (persons.value == '' || this.value == '') {
             totalValue.innerHTML = 0;
         } else {
-            totalValue.innerHTML = total;
+            animateCalc(+totalValue.innerHTML, total);
         }
     });
 
@@ -423,5 +442,19 @@ window.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
         }
         return (/[0-9]/.test(e.key)) ? e.key : '';
+    }
+
+    function animateCalc(from, to) {
+        console.log(`from ${from} to ${to}`)
+        let timer = setInterval(() => {
+            if (from == to) {
+                clearInterval(timer);
+            } else if (from < to) {
+                from += 100;
+            } else {
+                from -= 100;
+            }
+            totalValue.innerHTML = from;
+        }, 1 / 10);
     }
 });
