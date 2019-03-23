@@ -78,6 +78,9 @@ function sendForm() {
         for (let i = 0; i < input.length; i++) {
             input[i].value = '';
         }
+        setTimeout( () => {
+            statusMessage.innerHTML = '';
+        }, 1500);
     }
 
 

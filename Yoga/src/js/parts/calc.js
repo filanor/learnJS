@@ -15,14 +15,15 @@ function calc() {
     totalValue.innerHTML = 0;
 
     persons.addEventListener('keypress', function (e) {
-        this.value += validKey(e);
+        // this.value += validKey(e);
+        this.value = (this.value == '0') ? validKey(e) : this.value +validKey(e);
     });
 
     persons.addEventListener('keyup', function (e) {
         personsSum = +this.value;
         total = (daysSum + personsSum) * 4000;
 
-        if (this.value == '' || restDays.value == '') {
+        if (this.value == '' || restDays.value == '' || this.value == '0' || restDays.value == '0') {
             totalValue.innerHTML = 0;
         } else {
             animateCalc(+totalValue.innerHTML, total);
@@ -31,14 +32,14 @@ function calc() {
 
 
     restDays.addEventListener('keypress', function (e) {
-        this.value += validKey(e);
+        this.value = (this.value == '0') ? validKey(e) : this.value +validKey(e);
     });
 
     restDays.addEventListener('keyup', function (e) {
         daysSum = +this.value;
         total = (daysSum + personsSum) * 4000;
 
-        if (persons.value == '' || this.value == '') {
+        if (persons.value == '' || this.value == '' || this.value == '0' || persons.value == '0') {
             totalValue.innerHTML = 0;
         } else {
             animateCalc(+totalValue.innerHTML, total);
@@ -46,7 +47,7 @@ function calc() {
     });
 
     place.addEventListener('change', function (e) {
-        if (persons.value == '' || restDays.value == '') {
+        if (persons.value == '' || restDays.value == '' || persons.value == '0' || restDays.value == '0') {
             totalValue.innerHTML = 0;
         } else {
             let a = total;
@@ -72,7 +73,7 @@ function calc() {
                 from -= 100;
             }
             totalValue.innerHTML = from;
-        }, 1 / 10);
+        }, 1 / 100);
     }
 }
 
