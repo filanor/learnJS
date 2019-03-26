@@ -1,9 +1,6 @@
-window.NodeList && !NodeList.prototype.forEach && (NodeList.prototype.forEach = function (o, t) {
-    t = t || window;
-    for (var i = 0; i < this.length; i++) o.call(t, this[i], i, this);
-});
+require('formdata-polyfill')
 
-
+//require('es6-promise').polyfill();
 window.addEventListener('DOMContentLoaded', function () {
     'use strict';
     const calc = require('./parts/calc');
@@ -21,5 +18,13 @@ window.addEventListener('DOMContentLoaded', function () {
     modal();
     sendForm();
     calc();
- 
 });
+if ('NodeList' in window && !NodeList.prototype.forEach) {
+    console.info('polyfill for IE11');
+    NodeList.prototype.forEach = function (callback, thisArg) {
+      thisArg = thisArg || window;
+      for (var i = 0; i < this.length; i++) {
+        callback.call(thisArg, this[i], i, this);
+      }
+    };
+  }
