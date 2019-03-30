@@ -224,22 +224,25 @@ module.exports = siteInit;
 
 // sizePic
 function sizePic() {
+  // Функция отвечает за замену картинок при наведелии мышки. 
+  // Раздел размеры
   var sizes = document.querySelectorAll('.sizes-block');
 
   for (var i = 0; i < sizes.length; i++) {
     sizes[i].addEventListener('mouseover', function (e) {
+      //showPic(this);
+      toggle(this.querySelectorAll('p'));
       this.children[0].setAttribute('src', changeImg(this, e.type));
     });
     sizes[i].addEventListener('mouseout', function (e) {
+      toggle(this.querySelectorAll('p'));
       this.children[0].setAttribute('src', changeImg(this, e.type));
-
-      for (var j = 1; j < this.childNodes.length; j++) {
-        this.childNodes[j].style.display = "block";
-      }
     });
   }
 
   function changeImg(element, event) {
+    // возвращает необходимый src для подстановки в img
+    // получает тип событияи элемент на котором оно произошло
     var src = element.children[0].getAttribute('src'),
         pos = src.indexOf('.png');
 
@@ -248,6 +251,18 @@ function sizePic() {
     }
 
     return src.slice(0, pos - 2) + src.slice(pos);
+  }
+
+  function toggle(items) {
+    for (var _i = 0; _i < items.length; _i++) {
+      console.log(items[_i].style.display);
+
+      if (!items[_i].classList.contains('sizes-hit') && (items[_i].style.display == 'block' || items[_i].style.display == '')) {
+        items[_i].style.display = 'none';
+      } else {
+        items[_i].style.display = 'block';
+      }
+    }
   }
 }
 
