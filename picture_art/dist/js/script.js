@@ -101,12 +101,64 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var showMoreStyle = __webpack_require__(/*! ./parts/showMoreStyle */ "./js/parts/showMoreStyle.js"),
       sizePic = __webpack_require__(/*! ./parts/sizePic */ "./js/parts/sizePic.js"),
-      sliders = __webpack_require__(/*! ./parts/sliders */ "./js/parts/sliders.js");
+      sliders = __webpack_require__(/*! ./parts/sliders */ "./js/parts/sliders.js"),
+      siteInit = __webpack_require__(/*! ./parts/siteInit */ "./js/parts/siteInit.js"),
+      picFilter = __webpack_require__(/*! ./parts/picFilter */ "./js/parts/picFilter.js");
 
+  var clickFlag = false;
+  siteInit();
   showMoreStyle();
   sizePic();
   sliders();
+  picFilter();
 });
+
+/***/ }),
+
+/***/ "./js/parts/picFilter.js":
+/*!*******************************!*\
+  !*** ./js/parts/picFilter.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function picFilter() {
+  // Функция отвечает за фильтрацию картинок в разделе portfolio
+  var menuItem = document.querySelectorAll('.portfolio-menu  li'),
+      portfolioItem = document.querySelectorAll('.portfolio-block'),
+      portfolioNo = document.querySelector('.portfolio-no'); // вешаем обработчики на кнопки и устанавливаем активнй тип       
+
+  for (var i = 0; i < menuItem.length; i++) {
+    menuItem[i].addEventListener('click', function (e) {
+      for (var j = 0; j < menuItem.length; j++) {
+        menuItem[j].classList.remove('active');
+      }
+
+      var type = this.classList[0];
+      filter(type);
+      this.classList.add('active');
+    });
+  }
+
+  function filter(type) {
+    // функция выводит на экран нужные картинки
+    // count - количество подходящих фото. если нет - portfolio-no
+    var count = 0;
+
+    for (var _i = 0; _i < portfolioItem.length; _i++) {
+      if (portfolioItem[_i].classList.contains(type)) {
+        portfolioItem[_i].style.display = 'block';
+        count++;
+      } else {
+        portfolioItem[_i].style.display = 'none';
+      }
+    }
+
+    portfolioNo.style.display = count == 0 ? 'block' : 'none';
+  }
+}
+
+module.exports = picFilter;
 
 /***/ }),
 
@@ -131,6 +183,35 @@ function showMoreStyle() {
 }
 
 module.exports = showMoreStyle;
+
+/***/ }),
+
+/***/ "./js/parts/siteInit.js":
+/*!******************************!*\
+  !*** ./js/parts/siteInit.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function siteInit() {
+  var burger = document.querySelector('.burger'),
+      menu = document.querySelector('.burger-menu');
+  var windowWidth = document.body.clientWidth;
+  burger.addEventListener('click', function (e) {
+    if (windowWidth <= 768) {
+      menu.style.display = 'block';
+    }
+  });
+  window.addEventListener('resize', function (e) {
+    windowWidth = document.body.clientWidth;
+
+    if (windowWidth > 768) {
+      menu.style.display = 'none';
+    }
+  });
+}
+
+module.exports = siteInit;
 
 /***/ }),
 

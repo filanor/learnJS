@@ -40,4 +40,3 @@ function sliders() {
     }
 }
 module.exports = sliders;
-//saf

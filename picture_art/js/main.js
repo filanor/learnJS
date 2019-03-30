@@ -7,10 +7,14 @@ window.addEventListener('DOMContentLoaded', () => {
     // }, 60000);
     const showMoreStyle = require('./parts/showMoreStyle'),
           sizePic = require('./parts/sizePic'),
-          sliders = require('./parts/sliders');
+          sliders = require('./parts/sliders'),
+          siteInit = require('./parts/siteInit'),
+          picFilter = require('./parts/picFilter');
+    let clickFlag = false;
 
-    
+    siteInit();
     showMoreStyle();
     sizePic();
     sliders();
+    picFilter();
 })
