@@ -189,7 +189,7 @@ function popup() {
   // setTimeout(() => {
   //     alert('прошло 60 секунд')
   // }, 60000);
-  var present = document.querySelector('.fixed-gift'),
+  var gift = document.querySelector('.fixed-gift'),
       designButtons = document.querySelectorAll('.button-design'),
       consultationButtons = document.querySelectorAll('.button-consultation'),
       designPopup = document.querySelector('.popup-design'),
@@ -215,15 +215,22 @@ function popup() {
   } //обрабатываем скрол вниз
 
 
-  window.addEventListener('scroll', function () {
+  window.addEventListener('scroll', scrollForGift);
+
+  function scrollForGift() {
     var scrollHeight = window.pageYOffset,
         documentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight),
         windowHeight = document.documentElement.clientHeight;
 
     if (scrollHeight + windowHeight == documentHeight && clickFlag == false) {
       showModal(giftPopup);
+      gift.style.display = 'none'; // Разовая акция. после показа удоляем обработчик
+
+      window.removeEventListener('scroll', scrollForGift);
     }
-  });
+  } // Обрабатываем закрытие модальных окон
+
+
   giftPopup.addEventListener('click', function (e) {
     if (e.target && e.target.matches('.popup-close') || e.target.matches('.popup-gift')) {
       closeModal(giftPopup);
