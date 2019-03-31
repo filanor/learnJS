@@ -197,10 +197,15 @@ function popup() {
       giftPopup = document.querySelector('.popup-gift'),
       closeBtns = document.querySelectorAll('.popup-close'); // флаг для отслеживания нажатий
 
-  var clickFlag = false; //вешаем обработчик нажатия на кнопки заказа
+  var clickFlag = false; // Модальное окно при нажатии на подарок
+
+  gift.addEventListener('click', function () {
+    this.style.display = 'none';
+    showModal(giftPopup);
+  }); //вешаем обработчик нажатия на кнопки заказа
 
   for (var i = 0; i < designButtons.length; i++) {
-    designButtons[i].addEventListener('click', function (e) {
+    designButtons[i].addEventListener('click', function () {
       clickFlag = true;
       showModal(designPopup);
     });
@@ -208,16 +213,12 @@ function popup() {
 
 
   for (var _i = 0; _i < consultationButtons.length; _i++) {
-    consultationButtons[_i].addEventListener('click', function (e) {
+    consultationButtons[_i].addEventListener('click', function () {
       clickFlag = true;
       showModal(consultationPopup);
     });
-  }
+  } //обрабатываем скрол вниз
 
-  gift.addEventListener('click', function () {
-    this.style.display = 'none';
-    showModal(giftPopup);
-  }); //обрабатываем скрол вниз
 
   window.addEventListener('scroll', scrollForGift);
 

@@ -15,9 +15,15 @@ function popup() {
     // флаг для отслеживания нажатий
     let clickFlag = false;
 
+    // Модальное окно при нажатии на подарок
+    gift.addEventListener('click', function () {
+        this.style.display = 'none';
+        showModal(giftPopup);
+    });
+
     //вешаем обработчик нажатия на кнопки заказа
     for (let i = 0; i < designButtons.length; i++) {
-        designButtons[i].addEventListener('click', function (e) {
+        designButtons[i].addEventListener('click', () => {
             clickFlag = true;
             showModal(designPopup);
         });
@@ -25,16 +31,11 @@ function popup() {
 
     //вешаем обработчик нажатия на кнопки консультации
     for (let i = 0; i < consultationButtons.length; i++) {
-        consultationButtons[i].addEventListener('click', function (e) {
+        consultationButtons[i].addEventListener('click', () => {
             clickFlag = true;
             showModal(consultationPopup);
         });
     }
-
-    gift.addEventListener('click', function () {
-        this.style.display = 'none';
-        showModal(giftPopup);
-    });
 
     //обрабатываем скрол вниз
     window.addEventListener('scroll', scrollForGift);
