@@ -38,5 +38,9 @@ function sliders() {
         }
         slide[nextSlide].style.display = 'block';
     }
+
+    function animateSlide(direction = 'bot') {
+        
+    }
 }
 module.exports = sliders;

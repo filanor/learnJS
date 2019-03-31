@@ -94,16 +94,15 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 window.addEventListener('DOMContentLoaded', function () {
-  'use strict'; //модальное окно через 60 секунд
-  // setTimeout(() => {
-  //     alert('прошло 60 секунд')
-  // }, 60000);
+  'use strict';
 
   var showMoreStyle = __webpack_require__(/*! ./parts/showMoreStyle */ "./js/parts/showMoreStyle.js"),
       sizePic = __webpack_require__(/*! ./parts/sizePic */ "./js/parts/sizePic.js"),
       sliders = __webpack_require__(/*! ./parts/sliders */ "./js/parts/sliders.js"),
       siteInit = __webpack_require__(/*! ./parts/siteInit */ "./js/parts/siteInit.js"),
-      picFilter = __webpack_require__(/*! ./parts/picFilter */ "./js/parts/picFilter.js");
+      picFilter = __webpack_require__(/*! ./parts/picFilter */ "./js/parts/picFilter.js"),
+      forms = __webpack_require__(/*! ./parts/forms */ "./js/parts/forms.js"),
+      popup = __webpack_require__(/*! ./parts/popup */ "./js/parts/popup.js");
 
   var clickFlag = false;
   siteInit();
@@ -111,7 +110,23 @@ window.addEventListener('DOMContentLoaded', function () {
   sizePic();
   sliders();
   picFilter();
+  forms();
+  popup();
 });
+
+/***/ }),
+
+/***/ "./js/parts/forms.js":
+/*!***************************!*\
+  !*** ./js/parts/forms.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function forms() {// Функция отвечает за обработку всех форм на странице
+}
+
+module.exports = forms;
 
 /***/ }),
 
@@ -159,6 +174,85 @@ function picFilter() {
 }
 
 module.exports = picFilter;
+
+/***/ }),
+
+/***/ "./js/parts/popup.js":
+/*!***************************!*\
+  !*** ./js/parts/popup.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function popup() {
+  //модальное окно через 60 секунд
+  // setTimeout(() => {
+  //     alert('прошло 60 секунд')
+  // }, 60000);
+  var present = document.querySelector('.fixed-gift'),
+      designButtons = document.querySelectorAll('.button-design'),
+      consultationButtons = document.querySelectorAll('.button-consultation'),
+      designPopup = document.querySelector('.popup-design'),
+      consultationPopup = document.querySelector('.popup-consultation'),
+      giftPopup = document.querySelector('.popup-gift'),
+      closeBtns = document.querySelectorAll('.popup-close'); // флаг для отслеживания нажатий
+
+  var clickFlag = false; //вешаем обработчик нажатия на кнопки заказа
+
+  for (var i = 0; i < designButtons.length; i++) {
+    designButtons[i].addEventListener('click', function (e) {
+      clickFlag = true;
+      showModal(designPopup);
+    });
+  } //вешаем обработчик нажатия на кнопки консультации
+
+
+  for (var _i = 0; _i < consultationButtons.length; _i++) {
+    consultationButtons[_i].addEventListener('click', function (e) {
+      clickFlag = true;
+      showModal(consultationPopup);
+    });
+  } //обрабатываем скрол вниз
+
+
+  window.addEventListener('scroll', function () {
+    var scrollHeight = window.pageYOffset,
+        documentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight),
+        windowHeight = document.documentElement.clientHeight;
+
+    if (scrollHeight + windowHeight == documentHeight && clickFlag == false) {
+      showModal(giftPopup);
+    }
+  });
+  giftPopup.addEventListener('click', function (e) {
+    if (e.target && e.target.matches('.popup-close') || e.target.matches('.popup-gift')) {
+      closeModal(giftPopup);
+    }
+  });
+  designPopup.addEventListener('click', function (e) {
+    if (e.target && e.target.matches('.popup-close') || e.target.matches('.popup-design')) {
+      closeModal(designPopup);
+    }
+  });
+  consultationPopup.addEventListener('click', function (e) {
+    if (e.target && e.target.matches('.popup-close') || e.target.matches('.popup-consultation')) {
+      closeModal(consultationPopup);
+    }
+  });
+
+  function showModal(modal) {
+    //функция открывает необходимое модальное окно
+    document.body.style.overflow = 'hidden';
+    modal.style.display = "block";
+  }
+
+  function closeModal(modal) {
+    document.body.style.overflow = '';
+    modal.style.display = "none";
+  }
+}
+
+module.exports = popup;
 
 /***/ }),
 
@@ -312,6 +406,10 @@ function sliders() {
     }
 
     slide[nextSlide].style.display = 'block';
+  }
+
+  function animateSlide() {
+    var direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'bot';
   }
 }
 

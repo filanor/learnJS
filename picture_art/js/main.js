@@ -1,15 +1,13 @@
 window.addEventListener('DOMContentLoaded', () => {
     
     'use strict';
-    //модальное окно через 60 секунд
-    // setTimeout(() => {
-    //     alert('прошло 60 секунд')
-    // }, 60000);
     const showMoreStyle = require('./parts/showMoreStyle'),
           sizePic = require('./parts/sizePic'),
           sliders = require('./parts/sliders'),
           siteInit = require('./parts/siteInit'),
-          picFilter = require('./parts/picFilter');
+          picFilter = require('./parts/picFilter'),
+          forms = require('./parts/forms'),
+          popup = require('./parts/popup');
     let clickFlag = false;
 
     siteInit();
@@ -17,4 +15,6 @@ window.addEventListener('DOMContentLoaded', () => {
     sizePic();
     sliders();
     picFilter();
-})
+    forms();
+    popup();
+});
