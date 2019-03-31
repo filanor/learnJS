@@ -212,8 +212,12 @@ function popup() {
       clickFlag = true;
       showModal(consultationPopup);
     });
-  } //обрабатываем скрол вниз
+  }
 
+  gift.addEventListener('click', function () {
+    this.style.display = 'none';
+    showModal(giftPopup);
+  }); //обрабатываем скрол вниз
 
   window.addEventListener('scroll', scrollForGift);
 

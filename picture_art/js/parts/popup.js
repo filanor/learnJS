@@ -31,6 +31,11 @@ function popup() {
         });
     }
 
+    gift.addEventListener('click', function () {
+        this.style.display = 'none';
+        showModal(giftPopup);
+    });
+
     //обрабатываем скрол вниз
     window.addEventListener('scroll', scrollForGift);
 
