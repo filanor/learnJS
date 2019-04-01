@@ -126,12 +126,30 @@ window.addEventListener('DOMContentLoaded', function () {
 /***/ (function(module, exports) {
 
 function accordion() {
-  var accordionBtns = document.querySelectorAll('.accordion-heading'),
-      accordionItem = document.querySelectorAll('.accordion-block');
+  var buttons = document.querySelectorAll('.accordion-heading'),
+      items = document.querySelectorAll('.accordion-block');
+
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function () {
+      if (this.nextElementSibling.style.display == 'none') {
+        show(this.nextElementSibling);
+      } else {
+        hide();
+      }
+    });
+  }
+
+  function show(item) {
+    hide();
+    item.classList.add('animated', 'fadeIn');
+    item.style.display = "block";
+  }
 
   function hide() {
-    for (var i = 0; i < accordionItem.length; i++) {
-      accordionItem[i].style.display = 'none';
+    for (var _i = 0; _i < items.length; _i++) {
+      items[_i].classList.remove('fadeIn');
+
+      items[_i].style.display = 'none';
     }
   }
 
