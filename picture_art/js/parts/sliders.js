@@ -11,7 +11,7 @@ function sliders() {
     // Добавляем анимацию верхнему слайдеру. Он автоматический, 
     // поэтому можно добавить классы изначально
     for (let i = 0; i < slides.length; i++) {
-        slides[i].classList.add('animated', 'slideInDown');
+        slides[i].classList.add('animated', 'fadeInDown');
     }
 
     showSlide(slides);
@@ -23,20 +23,37 @@ function sliders() {
 
     // Слайдер с отзывами
     showSlide(feedSlides);
-    setInterval(() => {
+
+    function nextSlide() {
+    // переключение слайда по умолчанию
         curFeed = (curFeed == feedSlides.length - 1) ? 0 : curFeed + 1;
         showSlide(feedSlides, curFeed);
-    }, 10000);
+    }
+    let feedbackInterval = setInterval(nextSlide, 10000);
 
     prevFeed.addEventListener('click', function () {
         curFeed = (curFeed == 0) ? slides.length : curFeed - 1;
-        showSlide(feedSlides, curFeed);
+        nextSlideBtn('prev');
     });
 
     nextFeed.addEventListener('click', function () {
         curFeed = (curFeed == slides.length) ? 0 : curFeed + 1;
-        showSlide(feedSlides, curFeed);
+        nextSlideBtn('next');
     });
+
+    function nextSlideBtn(btn) {
+    // Отрабатывает переключение слайда при нажатии на кнопки. 
+        if (btn == 'next') {
+            feedSlides[curFeed].classList.remove('animated', 'fadeInLeft');
+            feedSlides[curFeed].classList.add('animated', 'fadeInRight');
+        } else {
+            feedSlides[curFeed].classList.remove('animated', 'fadeInRight');
+            feedSlides[curFeed].classList.add('animated', 'fadeInLeft');
+        }
+        clearInterval(feedbackInterval);
+        feedbackInterval = setInterval(nextSlide, 10000);
+        showSlide(feedSlides, curFeed);
+    }
 
 
 

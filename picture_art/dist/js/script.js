@@ -425,7 +425,7 @@ function sliders() {
   // поэтому можно добавить классы изначально
 
   for (var i = 0; i < slides.length; i++) {
-    slides[i].classList.add('animated', 'slideInDown');
+    slides[i].classList.add('animated', 'fadeInDown');
   }
 
   showSlide(slides);
@@ -435,18 +435,38 @@ function sliders() {
   }, 5000); // Слайдер с отзывами
 
   showSlide(feedSlides);
-  setInterval(function () {
+
+  function nextSlide() {
+    // переключение слайда по умолчанию
     curFeed = curFeed == feedSlides.length - 1 ? 0 : curFeed + 1;
     showSlide(feedSlides, curFeed);
-  }, 10000);
+  }
+
+  var feedbackInterval = setInterval(nextSlide, 10000);
   prevFeed.addEventListener('click', function () {
     curFeed = curFeed == 0 ? slides.length : curFeed - 1;
-    showSlide(feedSlides, curFeed);
+    nextSlideBtn('prev');
   });
   nextFeed.addEventListener('click', function () {
     curFeed = curFeed == slides.length ? 0 : curFeed + 1;
+    nextSlideBtn('next');
+  });
+
+  function nextSlideBtn(btn) {
+    // Отрабатывает переключение слайда при нажатии на кнопки. 
+    if (btn == 'next') {
+      feedSlides[curFeed].classList.remove('animated', 'fadeInLeft');
+      feedSlides[curFeed].classList.add('animated', 'fadeInRight');
+    } else {
+      feedSlides[curFeed].classList.remove('animated', 'fadeInRight');
+      feedSlides[curFeed].classList.add('animated', 'fadeInLeft');
+    }
+
+    clearInterval(feedbackInterval);
+    feedbackInterval = setInterval(nextSlide, 10000);
     showSlide(feedSlides, curFeed);
-  }); //общая функция, показывающая следующий слайд
+  } //общая функция, показывающая следующий слайд
+
 
   function showSlide(slide) {
     var nextSlide = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
