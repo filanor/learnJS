@@ -7,7 +7,8 @@ window.addEventListener('DOMContentLoaded', () => {
           siteInit = require('./parts/siteInit'),
           picFilter = require('./parts/picFilter'),
           forms = require('./parts/forms'),
-          popup = require('./parts/popup');
+          popup = require('./parts/popup'),
+          accordion = require('./parts/accordion');
     let clickFlag = false;
 
     siteInit();
@@ -17,4 +18,5 @@ window.addEventListener('DOMContentLoaded', () => {
     picFilter();
     forms();
     popup();
+    accordion();
 });

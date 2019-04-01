@@ -102,7 +102,8 @@ window.addEventListener('DOMContentLoaded', function () {
       siteInit = __webpack_require__(/*! ./parts/siteInit */ "./js/parts/siteInit.js"),
       picFilter = __webpack_require__(/*! ./parts/picFilter */ "./js/parts/picFilter.js"),
       forms = __webpack_require__(/*! ./parts/forms */ "./js/parts/forms.js"),
-      popup = __webpack_require__(/*! ./parts/popup */ "./js/parts/popup.js");
+      popup = __webpack_require__(/*! ./parts/popup */ "./js/parts/popup.js"),
+      accordion = __webpack_require__(/*! ./parts/accordion */ "./js/parts/accordion.js");
 
   var clickFlag = false;
   siteInit();
@@ -112,7 +113,32 @@ window.addEventListener('DOMContentLoaded', function () {
   picFilter();
   forms();
   popup();
+  accordion();
 });
+
+/***/ }),
+
+/***/ "./js/parts/accordion.js":
+/*!*******************************!*\
+  !*** ./js/parts/accordion.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function accordion() {
+  var accordionBtns = document.querySelectorAll('.accordion-heading'),
+      accordionItem = document.querySelectorAll('.accordion-block');
+
+  function hide() {
+    for (var i = 0; i < accordionItem.length; i++) {
+      accordionItem[i].style.display = 'none';
+    }
+  }
+
+  hide();
+}
+
+module.exports = accordion;
 
 /***/ }),
 
@@ -395,13 +421,20 @@ function sliders() {
       prevFeed = document.querySelector('.feedback-slider .main-prev-btn'),
       nextFeed = document.querySelector('.feedback-slider .main-next-btn');
   var curSlide = 0,
-      curFeed = 0;
+      curFeed = 0; // Добавляем анимацию верхнему слайдеру. Он автоматический, 
+  // поэтому можно добавить классы изначально
+
+  for (var i = 0; i < slides.length; i++) {
+    slides[i].classList.add('animated', 'slideInDown');
+  }
+
   showSlide(slides);
-  showSlide(feedSlides);
   setInterval(function () {
     curSlide = curSlide == slides.length - 1 ? 0 : curSlide + 1;
     showSlide(slides, curSlide);
-  }, 5000);
+  }, 5000); // Слайдер с отзывами
+
+  showSlide(feedSlides);
   setInterval(function () {
     curFeed = curFeed == feedSlides.length - 1 ? 0 : curFeed + 1;
     showSlide(feedSlides, curFeed);
@@ -413,20 +446,16 @@ function sliders() {
   nextFeed.addEventListener('click', function () {
     curFeed = curFeed == slides.length ? 0 : curFeed + 1;
     showSlide(feedSlides, curFeed);
-  });
+  }); //общая функция, показывающая следующий слайд
 
   function showSlide(slide) {
     var nextSlide = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-    for (var i = 0; i < slide.length; i++) {
-      slide[i].style.display = 'none';
+    for (var _i = 0; _i < slide.length; _i++) {
+      slide[_i].style.display = 'none';
     }
 
     slide[nextSlide].style.display = 'block';
-  }
-
-  function animateSlide() {
-    var direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'bot';
   }
 }
 
