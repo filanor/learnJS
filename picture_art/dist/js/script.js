@@ -103,7 +103,8 @@ window.addEventListener('DOMContentLoaded', function () {
       picFilter = __webpack_require__(/*! ./parts/picFilter */ "./js/parts/picFilter.js"),
       forms = __webpack_require__(/*! ./parts/forms */ "./js/parts/forms.js"),
       popup = __webpack_require__(/*! ./parts/popup */ "./js/parts/popup.js"),
-      accordion = __webpack_require__(/*! ./parts/accordion */ "./js/parts/accordion.js");
+      accordion = __webpack_require__(/*! ./parts/accordion */ "./js/parts/accordion.js"),
+      calc = __webpack_require__(/*! ./parts/calc */ "./js/parts/calc.js");
 
   var clickFlag = false;
   siteInit();
@@ -114,6 +115,7 @@ window.addEventListener('DOMContentLoaded', function () {
   forms();
   popup();
   accordion();
+  calc();
 });
 
 /***/ }),
@@ -157,6 +159,67 @@ function accordion() {
 }
 
 module.exports = accordion;
+
+/***/ }),
+
+/***/ "./js/parts/calc.js":
+/*!**************************!*\
+  !*** ./js/parts/calc.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function calc() {
+  //зададим цены
+  var price = {
+    'size': [1000, 1500, 2000, 2500],
+    'material': [1, 1.5, 2],
+    'options': [1000, 2000, 1000],
+    'promo': {
+      'value': 'IWANTPOPART',
+      'discount': 0.3
+    }
+  },
+      error = 'Для расчета нужно выбрать размер картины и материал картины',
+      options = document.getElementById('options'),
+      size = document.getElementById('size'),
+      material = document.getElementById('material'),
+      promo = document.querySelector('.promocode'),
+      calcPrice = document.querySelector('.calc-price');
+  size.addEventListener('change', function () {
+    showRez();
+  });
+  material.addEventListener('change', function () {
+    showRez();
+  });
+  options.addEventListener('change', function () {
+    showRez();
+  });
+  promo.addEventListener('change', function () {
+    showRez();
+  });
+
+  function showRez() {
+    //функция определяет ввыедены ли необходимые данные
+    // и выводит результат
+    if (size.selectedIndex != 0 && material.selectedIndex != 0) {
+      calcPrice.innerHTML = calculate();
+    } else {
+      calcPrice.innerHTML = error;
+    }
+  }
+
+  function calculate() {
+    //математика
+    var discount = promo.value == price['promo']['value'] ? +price['promo']['discount'] : 0,
+        extra = options.selectedIndex != 0 ? price['options'][options.selectedIndex - 1] : 0,
+        index = price['material'][material.selectedIndex - 1],
+        main = price['size'][size.selectedIndex - 1];
+    return (main * index + extra) * (1 - discount);
+  }
+}
+
+module.exports = calc;
 
 /***/ }),
 

@@ -8,7 +8,8 @@ window.addEventListener('DOMContentLoaded', () => {
           picFilter = require('./parts/picFilter'),
           forms = require('./parts/forms'),
           popup = require('./parts/popup'),
-          accordion = require('./parts/accordion');
+          accordion = require('./parts/accordion'),
+          calc = require('./parts/calc');
     let clickFlag = false;
 
     siteInit();
@@ -19,4 +20,5 @@ window.addEventListener('DOMContentLoaded', () => {
     forms();
     popup();
     accordion();
+    calc();
 });
