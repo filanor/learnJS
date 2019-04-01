@@ -186,9 +186,11 @@ module.exports = picFilter;
 
 function popup() {
   //модальное окно через 60 секунд
-  // setTimeout(() => {
-  //     alert('прошло 60 секунд')
-  // }, 60000);
+  setTimeout(function () {
+    if (haveOpenFlag == false) {
+      showModal(consultationPopup);
+    }
+  }, 60000);
   var gift = document.querySelector('.fixed-gift'),
       designButtons = document.querySelectorAll('.button-design'),
       consultationButtons = document.querySelectorAll('.button-consultation'),
@@ -197,7 +199,8 @@ function popup() {
       giftPopup = document.querySelector('.popup-gift'),
       closeBtns = document.querySelectorAll('.popup-close'); // флаг для отслеживания нажатий
 
-  var clickFlag = false; // Модальное окно при нажатии на подарок
+  var clickFlag = false,
+      haveOpenFlag = false; // Модальное окно при нажатии на подарок
 
   gift.addEventListener('click', function () {
     this.style.display = 'none';
@@ -256,11 +259,13 @@ function popup() {
     //функция открывает необходимое модальное окно
     document.body.style.overflow = 'hidden';
     modal.style.display = "block";
+    haveOpenFlag = true;
   }
 
   function closeModal(modal) {
     document.body.style.overflow = '';
     modal.style.display = "none";
+    haveOpenFlag = false;
   }
 }
 

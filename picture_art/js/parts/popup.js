@@ -1,8 +1,11 @@
 function popup() {
+    
     //модальное окно через 60 секунд
-    // setTimeout(() => {
-    //     alert('прошло 60 секунд')
-    // }, 60000);
+    setTimeout(() => {
+        if(haveOpenFlag == false) {
+            showModal(consultationPopup);
+        }
+    }, 60000);
 
     const gift = document.querySelector('.fixed-gift'),
         designButtons = document.querySelectorAll('.button-design'),
@@ -13,7 +16,8 @@ function popup() {
         closeBtns = document.querySelectorAll('.popup-close');
 
     // флаг для отслеживания нажатий
-    let clickFlag = false;
+    let clickFlag = false,
+        haveOpenFlag = false;
 
     // Модальное окно при нажатии на подарок
     gift.addEventListener('click', function () {
@@ -80,11 +84,13 @@ function popup() {
         //функция открывает необходимое модальное окно
         document.body.style.overflow = 'hidden';
         modal.style.display = "block";
+        haveOpenFlag = true;
     }
 
     function closeModal(modal) {
         document.body.style.overflow = '';
         modal.style.display = "none";
+        haveOpenFlag = false;
     }
 }
 module.exports = popup;
