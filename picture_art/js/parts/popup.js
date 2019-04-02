@@ -85,6 +85,7 @@ function popup() {
         document.body.style.overflow = 'hidden';
         modal.style.display = "block";
         haveOpenFlag = true;
+        window.removeEventListener('scroll', scrollForGift);
     }
 
     function closeModal(modal) {
