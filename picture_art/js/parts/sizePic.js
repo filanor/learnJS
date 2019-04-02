@@ -7,7 +7,6 @@ function sizePic() {
     for (let i = 0; i < sizes.length; i++) {
 
         sizes[i].addEventListener('mouseover', function (e) {
-            //showPic(this);
             toggle(this.querySelectorAll('p'));
             this.children[0].setAttribute('src', changeImg(this, e.type));
             
@@ -34,7 +33,6 @@ function sizePic() {
 
     function toggle (items) {
         for (let i = 0; i < items.length; i++){
-            console.log(items[i].style.display);
             if (!items[i].classList.contains('sizes-hit') && (items[i].style.display == 'block' || items[i].style.display == '') ) {
                 
                 items[i].style.display = 'none';

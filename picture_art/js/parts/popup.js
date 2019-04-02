@@ -16,8 +16,7 @@ function popup() {
         closeBtns = document.querySelectorAll('.popup-close');
 
     // флаг для отслеживания нажатий
-    let clickFlag = false,
-        haveOpenFlag = false;
+    let haveOpenFlag = false;
 
     // Модальное окно при нажатии на подарок
     gift.addEventListener('click', function () {
@@ -27,18 +26,12 @@ function popup() {
 
     //вешаем обработчик нажатия на кнопки заказа
     for (let i = 0; i < designButtons.length; i++) {
-        designButtons[i].addEventListener('click', () => {
-            clickFlag = true;
-            showModal(designPopup);
-        });
+        designButtons[i].addEventListener('click', e => showModal(designPopup));
     }
 
     //вешаем обработчик нажатия на кнопки консультации
     for (let i = 0; i < consultationButtons.length; i++) {
-        consultationButtons[i].addEventListener('click', () => {
-            clickFlag = true;
-            showModal(consultationPopup);
-        });
+        consultationButtons[i].addEventListener('click', () => showModal(consultationPopup));
     }
 
     //обрабатываем скрол вниз
@@ -53,7 +46,7 @@ function popup() {
             ),
             windowHeight = document.documentElement.clientHeight;
 
-        if (scrollHeight + windowHeight == documentHeight && clickFlag == false) {
+        if (scrollHeight + windowHeight == documentHeight) {
             showModal(giftPopup);
             gift.style.display = 'none';
             // Разовая акция. после показа удоляем обработчик
@@ -62,19 +55,19 @@ function popup() {
     }
 
     // Обрабатываем закрытие модальных окон
-    giftPopup.addEventListener('click', function (e) {
+    giftPopup.addEventListener('click', (e) => {
         if (e.target && e.target.matches('.popup-close') || e.target.matches('.popup-gift')) {
             closeModal(giftPopup);
         }
     });
 
-    designPopup.addEventListener('click', function (e) {
+    designPopup.addEventListener('click', (e) => {
         if (e.target && e.target.matches('.popup-close') || e.target.matches('.popup-design')) {
             closeModal(designPopup);
         }
     });
 
-    consultationPopup.addEventListener('click', function (e) {
+    consultationPopup.addEventListener('click', (e) => {
         if (e.target && e.target.matches('.popup-close') || e.target.matches('.popup-consultation')) {
             closeModal(consultationPopup);
         }

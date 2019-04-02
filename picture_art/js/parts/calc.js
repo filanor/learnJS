@@ -14,25 +14,14 @@ function calc() {
         size = document.getElementById('size'),
         material = document.getElementById('material'),
         promo = document.querySelector('.promocode'),
-        calcPrice = document.querySelector('.calc-price');
+        calcPrice = document.querySelector('.calc-price'),
+        calcSelect = document.querySelectorAll('.calc select');
 
+    for (let i = 0; i < calcSelect.length; i++ ) {
+        calcSelect[i].addEventListener('change', e => showRez());
+    }
 
-    size.addEventListener('change', function (){
-        showRez();
-    });
-
-    material.addEventListener('change', function (){
-        showRez();
-    });
-
-    options.addEventListener('change', function (){
-        showRez();
-        
-    });
-
-    promo.addEventListener('change', function(){
-        showRez();
-    });
+    promo.addEventListener('change', e => showRez());
 
     function showRez(){
         //функция определяет ввыедены ли необходимые данные
@@ -51,7 +40,7 @@ function calc() {
             extra = (options.selectedIndex != 0) ? price['options'][options.selectedIndex-1] : 0,
             index = price['material'][material.selectedIndex -1],
             main = price['size'][size.selectedIndex-1];
-        
+    
         return (main * index + extra) * (1- discount);
     }
 

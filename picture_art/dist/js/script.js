@@ -157,12 +157,15 @@ function accordion() {
 
   function show(item) {
     hide();
+    item.previousElementSibling.classList.add('ui-accordion-header-active');
     item.classList.add('animated', 'fadeIn');
     item.style.display = "block";
   }
 
   function hide() {
     for (var _i = 0; _i < items.length; _i++) {
+      buttons[_i].classList.remove('ui-accordion-header-active');
+
       items[_i].classList.remove('fadeIn');
 
       items[_i].style.display = 'none';
@@ -199,18 +202,17 @@ function calc() {
       size = document.getElementById('size'),
       material = document.getElementById('material'),
       promo = document.querySelector('.promocode'),
-      calcPrice = document.querySelector('.calc-price');
-  size.addEventListener('change', function () {
-    showRez();
-  });
-  material.addEventListener('change', function () {
-    showRez();
-  });
-  options.addEventListener('change', function () {
-    showRez();
-  });
-  promo.addEventListener('change', function () {
-    showRez();
+      calcPrice = document.querySelector('.calc-price'),
+      calcSelect = document.querySelectorAll('.calc select');
+
+  for (var i = 0; i < calcSelect.length; i++) {
+    calcSelect[i].addEventListener('change', function (e) {
+      return showRez();
+    });
+  }
+
+  promo.addEventListener('change', function (e) {
+    return showRez();
   });
 
   function showRez() {
@@ -434,8 +436,7 @@ function popup() {
       giftPopup = document.querySelector('.popup-gift'),
       closeBtns = document.querySelectorAll('.popup-close'); // флаг для отслеживания нажатий
 
-  var clickFlag = false,
-      haveOpenFlag = false; // Модальное окно при нажатии на подарок
+  var haveOpenFlag = false; // Модальное окно при нажатии на подарок
 
   gift.addEventListener('click', function () {
     this.style.display = 'none';
@@ -443,17 +444,15 @@ function popup() {
   }); //вешаем обработчик нажатия на кнопки заказа
 
   for (var i = 0; i < designButtons.length; i++) {
-    designButtons[i].addEventListener('click', function () {
-      clickFlag = true;
-      showModal(designPopup);
+    designButtons[i].addEventListener('click', function (e) {
+      return showModal(designPopup);
     });
   } //вешаем обработчик нажатия на кнопки консультации
 
 
   for (var _i = 0; _i < consultationButtons.length; _i++) {
     consultationButtons[_i].addEventListener('click', function () {
-      clickFlag = true;
-      showModal(consultationPopup);
+      return showModal(consultationPopup);
     });
   } //обрабатываем скрол вниз
 
@@ -465,7 +464,7 @@ function popup() {
         documentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight),
         windowHeight = document.documentElement.clientHeight;
 
-    if (scrollHeight + windowHeight == documentHeight && clickFlag == false) {
+    if (scrollHeight + windowHeight == documentHeight) {
       showModal(giftPopup);
       gift.style.display = 'none'; // Разовая акция. после показа удоляем обработчик
 
@@ -520,8 +519,8 @@ function showMoreStyle() {
   // больше стилей
   var items = document.querySelectorAll('.styles-2'),
       btn = document.querySelector('.button-styles');
-  btn.addEventListener('click', function () {
-    this.style.display = 'none';
+  btn.addEventListener('click', function (e) {
+    btn.style.display = 'none';
 
     for (var i = 0; i < items.length; i++) {
       items[i].classList = "col-sm-3 col-sm-offset-0 col-xs-10 col-xs-offset-1";
@@ -545,8 +544,15 @@ function siteInit() {
       menu = document.querySelector('.burger-menu');
   var windowWidth = document.body.clientWidth;
   burger.addEventListener('click', function (e) {
-    if (windowWidth <= 768) {
+    if (menu.style.display == 'block') {
+      menu.style.display = 'none';
+    } else if (windowWidth <= 768) {
       menu.style.display = 'block';
+    }
+  });
+  document.addEventListener('mouseup', function (e) {
+    if (e.target != menu && e.target != burger) {
+      menu.style.display = 'none';
     }
   });
   window.addEventListener('resize', function (e) {
@@ -577,7 +583,6 @@ function sizePic() {
 
   for (var i = 0; i < sizes.length; i++) {
     sizes[i].addEventListener('mouseover', function (e) {
-      //showPic(this);
       toggle(this.querySelectorAll('p'));
       this.children[0].setAttribute('src', changeImg(this, e.type));
     });
@@ -602,8 +607,6 @@ function sizePic() {
 
   function toggle(items) {
     for (var _i = 0; _i < items.length; _i++) {
-      console.log(items[_i].style.display);
-
       if (!items[_i].classList.contains('sizes-hit') && (items[_i].style.display == 'block' || items[_i].style.display == '')) {
         items[_i].style.display = 'none';
       } else {
