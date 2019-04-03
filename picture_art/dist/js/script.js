@@ -95,6 +95,8 @@
 
 __webpack_require__(/*! formdata-polyfill */ "./node_modules/formdata-polyfill/formdata.min.js");
 
+__webpack_require__(/*! element-matches-polyfill */ "./node_modules/element-matches-polyfill/index.js");
+
 window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
@@ -693,6 +695,31 @@ function sliders() {
 }
 
 module.exports = sliders;
+
+/***/ }),
+
+/***/ "./node_modules/element-matches-polyfill/index.js":
+/*!********************************************************!*\
+  !*** ./node_modules/element-matches-polyfill/index.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+if (!Element.prototype.matches) {
+  Element.prototype.matches =
+    Element.prototype.matchesSelector ||
+    Element.prototype.mozMatchesSelector ||
+    Element.prototype.msMatchesSelector ||
+    Element.prototype.oMatchesSelector ||
+    Element.prototype.webkitMatchesSelector ||
+    function(s) {
+      var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+        i = matches.length;
+      while (--i >= 0 && matches.item(i) !== this) {}
+      return i > -1;
+    };
+}
+
 
 /***/ }),
 

@@ -1,4 +1,5 @@
 require('formdata-polyfill')
+require('element-matches-polyfill');
 
 window.addEventListener('DOMContentLoaded', () => {
     
