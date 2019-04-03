@@ -14,8 +14,10 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-es6-promise": "^1.1.1",
     "element-matches-polyfill": "^1.0.0",
+    "es6-promise": "^4.2.6",
     "fetch-polyfill": "^0.8.2",
     "formdata-polyfill": "^3.0.17",
+    "universal-fetch": "^1.0.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   },
